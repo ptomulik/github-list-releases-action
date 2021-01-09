@@ -74,7 +74,7 @@ may also contain flags
 ```yaml
 use: ptomulik/github-action-get-releases@v0
     with:
-        name: "/^v?5.3.1$/"
+        name: "/^v?5.3.\d+$/"
 ```
 
 ```yaml
@@ -124,7 +124,7 @@ use: ptomulik/github-action-get-releases@v0
         sort: 'id'
 ```
 
-Sort by ``id`` in descendant order.
+Sort by ``id`` in descending order.
 
 ```yaml
 use: ptomulik/github-action-get-releases@v0
@@ -132,8 +132,8 @@ use: ptomulik/github-action-get-releases@v0
         sort: 'id DSC'
 ```
 
-Sort by ``draft`` status in ascendant order (``false`` goes first) then by
-``name`` in descendant order.
+Sort by ``draft`` status in ascendig order (``false`` goes first) then by
+``name`` in descending order.
 
 ```yaml
 use: ptomulik/github-action-get-releases@v0
@@ -146,7 +146,7 @@ use: ptomulik/github-action-get-releases@v0
 Default sort order.
 
 Allowed values are ``"A"``|``"ASC"`` (ascending) or ``"D"``|``"DSC"``|``"DESC"``
-(descending).
+(descending). If missing or empty, the default sort order is ascending.
 
 ### select
 
@@ -256,6 +256,7 @@ and most of the action's inputs may be provided via HTML form.
 Note that ``work_dispatch`` only works on default branch.
 
 ```yaml
+---
 name: Get & Print Releases
 
 on:
@@ -289,7 +290,7 @@ on:
             select:
                 description: 'Select'
                 required: false
-                default: id, name, tag, created_at, published_at, url
+                default: id, name, tag_name, created_at, published_at, url
             slice:
                 description: 'Slice'
                 required: false
@@ -302,24 +303,71 @@ jobs:
         steps:
 
             - name: Get Releases
-                id: releases
-                uses: ptomulik/github-action-get-releases@v0
-                with:
-                    token:      ${{ secrets.GET_RELEASES_TOKEN }}
-                    owner:      ${{ github.event.inputs.owner }}
-                    repo:       ${{ github.event.inputs.repo }}
-                    name:       ${{ github.event.inputs.name }}
-                    tag_name:   ${{ github.event.inputs.tag_name }}
-                    draft:      ${{ github.event.inputs.draft }}
-                    prerelease: ${{ github.event.inputs.prerelease }}
-                    sort:       ${{ github.event.inputs.sort }}
-                    select:     ${{ github.event.inputs.select }}
-                    slice:      ${{ github.event.inputs.slice }}
+              id: releases
+              uses: ptomulik/github-action-get-releases@v0
+              with:
+                  token: ${{ secrets.GET_RELEASES_TOKEN }}
+                  owner: ${{ github.event.inputs.owner }}
+                  repo: ${{ github.event.inputs.repo }}
+                  name: ${{ github.event.inputs.name }}
+                  tag_name: ${{ github.event.inputs.tag_name }}
+                  draft: ${{ github.event.inputs.draft }}
+                  prerelease: ${{ github.event.inputs.prerelease }}
+                  sort: ${{ github.event.inputs.sort }}
+                  select: ${{ github.event.inputs.select }}
+                  slice: ${{ github.event.inputs.slice }}
 
             - name: Print Releases
-                run: |
-                    echo -n 'releases: ' && jq '' <<'!'
-                    ${{ steps.releases.outputs.json }}
-                    !
-                    echo 'count: ${{ steps.releases.outputs.count }}'
+              run: |
+                  echo -n 'releases: ' && jq '' <<'!'
+                  ${{ steps.releases.outputs.json }}
+                  !
+                  echo 'count: ${{ steps.releases.outputs.count }}'
+
+# vim: set ft=yaml ts=4 sw=4 sts=4 et:
 ```
+
+Console output for default workflow inputs
+
+```console
+releases: [
+  {
+    "id": 34601898,
+    "name": "v5.2.1",
+    "tag_name": "v5.2.1",
+    "created_at": "2020-11-30T21:08:01Z",
+    "published_at": "2020-11-30T21:10:57Z",
+    "url": "https://api.github.com/repos/code-lts/doctum/releases/34601898"
+  },
+  {
+    "id": 34553342,
+    "name": "v5.2.0",
+    "tag_name": "v5.2.0",
+    "created_at": "2020-11-29T21:45:55Z",
+    "published_at": "2020-11-29T21:54:06Z",
+    "url": "https://api.github.com/repos/code-lts/doctum/releases/34553342"
+  }
+]
+```
+
+## LICENSE
+
+Copyright (c) 2021 by Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
