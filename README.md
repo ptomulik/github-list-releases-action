@@ -55,7 +55,7 @@ by name to ``*``).
 Allow any name,
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         name: "*"
 ```
@@ -63,7 +63,7 @@ use: ptomulik/github-action-get-releases@v0
 Select release(s) with name == "specific"
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         name: "specific"
 ```
@@ -72,13 +72,13 @@ Select releases whose names match a regular expession, the regular expession
 may also contain flags
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         name: "/^v?5.3.\d+$/"
 ```
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         name: "/^latest$/i"
 ```
@@ -119,7 +119,7 @@ specifier - ``"A"``|``"ASC"`` (ascending) or ``"D"``|``"DSC"``|``"DESC"``
 Sort by ``id``.
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         sort: 'id'
 ```
@@ -127,7 +127,7 @@ use: ptomulik/github-action-get-releases@v0
 Sort by ``id`` in descending order.
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         sort: 'id DSC'
 ```
@@ -136,7 +136,7 @@ Sort by ``draft`` status in ascendig order (``false`` goes first) then by
 ``name`` in descending order.
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         sort: 'draft = ASC, name = DSC'
 ```
@@ -161,7 +161,7 @@ properties (the same may be achieved with ``"*"``).
 Select only ``name`` and ``url``
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         select: 'name, url'
 ```
@@ -177,7 +177,7 @@ Determines the range of entries to be sliceed after sorting.
 Return all entries
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         slice: 'all'
 ```
@@ -185,7 +185,7 @@ use: ptomulik/github-action-get-releases@v0
 Return first entry
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         slice: 'first'
 ```
@@ -193,7 +193,7 @@ use: ptomulik/github-action-get-releases@v0
 Return up to 3 first entries
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         slice: 'first 3'
 ```
@@ -201,7 +201,7 @@ use: ptomulik/github-action-get-releases@v0
 Return last entry
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         slice: 'last'
 ```
@@ -209,7 +209,7 @@ use: ptomulik/github-action-get-releases@v0
 Return up to 3 last entries
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         slice: 'last 3'
 ```
@@ -217,7 +217,7 @@ use: ptomulik/github-action-get-releases@v0
 Return entries 2 to 4 (zero-based indices)
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         slice: '2 ... 4'
 ```
@@ -225,7 +225,7 @@ use: ptomulik/github-action-get-releases@v0
 Return entries from 2 to end of array
 
 ```yaml
-use: ptomulik/github-action-get-releases@v0
+  - uses: ptomulik/github-action-get-releases@v0
     with:
         slice: '2 ...'
 ```
