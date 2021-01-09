@@ -57,15 +57,15 @@ Allow any name,
 ```yaml
   - uses: ptomulik/github-action-get-releases@v0
     with:
-        name: "*"
+        name: '*'
 ```
 
-Select release(s) with name == "specific"
+Select release(s) with name == 'specific'
 
 ```yaml
   - uses: ptomulik/github-action-get-releases@v0
     with:
-        name: "specific"
+        name: 'specific'
 ```
 
 Select releases whose names match a regular expession, the regular expession
@@ -74,13 +74,13 @@ may also contain flags
 ```yaml
   - uses: ptomulik/github-action-get-releases@v0
     with:
-        name: "/^v?5.3.\d+$/"
+        name: '/^v?5.3.\d+$/'
 ```
 
 ```yaml
   - uses: ptomulik/github-action-get-releases@v0
     with:
-        name: "/^latest$/i"
+        name: '/^latest$/i'
 ```
 
 ### tag\_name
@@ -111,7 +111,7 @@ Allows selecting prereleases/non-prereleases.Suported values are ``false``,
 List of properties used for sorting the retrieved releases.
 
 Comma-separated list of property names, each optionally followed by order
-specifier - ``"A"``|``"ASC"`` (ascending) or ``"D"``|``"DSC"``|``"DESC"``
+specifier - ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
 (descending). Used to sort the resultant array.'
 
 ### Examples:
@@ -145,7 +145,7 @@ Sort by ``draft`` status in ascendig order (``false`` goes first) then by
 
 Default sort order.
 
-Allowed values are ``"A"``|``"ASC"`` (ascending) or ``"D"``|``"DSC"``|``"DESC"``
+Allowed values are ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
 (descending). If missing or empty, the default sort order is ascending.
 
 ### select
@@ -154,7 +154,7 @@ List of properties to be returned.
 
 List of properties to be included in each entry of the result. This should
 be a space or comma separated list of keywords. If missing or empty, allows all
-properties (the same may be achieved with ``"*"``).
+properties (the same may be achieved with ``'*'``).
 
 #### Examples:
 
