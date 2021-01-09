@@ -1,584 +1,547 @@
-"use strict";
+'use strict'
 
-const { Filter, Sorter, Selector, Slicer, Processor } = require('../src/processor');
+/* eslint camelcase: [error, {properties: "never"}] */
 
+const {
+  Filter,
+  Sorter,
+  Selector,
+  Slicer,
+  Processor,
+} = require('../src/processor')
 
 //
 // Filter
 //
 
-for (const { desc, input, entries, output } of [
-  {
-    desc:     'with empty input',
-    input:    { },
-    entries:  [ {name: 'foo'} ],
-    output:   [ {name: 'foo'} ],
-  },
-  {
-    desc:     'with name: null',
-    input:    { name: null },
-    entries:  [{name: 'a'}, {name: 'b'}],
-    output:   [{name: 'a'}, {name: 'b'}],
-  },
-  {
-    desc:     'with name: "foo"',
-    input:    { name: 'foo'},
-    entries:  [ {name: 'foo'}, {name: 'bar'} ],
-    output:   [ {name: 'foo'} ],
-  },
-  {
-    desc:     'with name: "/^v?\\d+\\.\\d+\\.\\d+$/"',
-    input:    { name: /^v?\d+\.\d+.\d+$/ },
-    entries:  [ {name: 'latest'}, {name: 'v1.0.0'}, {name: 'v1.1.0'}, {name: '1.2.0'} ],
-    output:   [ {name: 'v1.0.0'}, {name: 'v1.1.0'}, {name: '1.2.0'} ],
-  },
-  {
-    desc:     'with tag_name: "foo"',
-    input:    { tag_name: 'foo'},
-    entries:  [ {tag_name: 'foo'}, {tag_name: 'bar'} ],
-    output:   [ {tag_name: 'foo'} ],
-  },
-  {
-    desc:     'with tag_name: "/^v?\\d+\\.\\d+\\.\\d+$/"',
-    input:    { tag_name: /^v?\d+\.\d+.\d+$/ },
-    entries:  [ {tag_name: 'latest'}, {tag_name: 'v1.0.0'}, {tag_name: 'v1.1.0'}, {tag_name: '1.2.0'} ],
-    output:   [ {tag_name: 'v1.0.0'}, {tag_name: 'v1.1.0'}, {tag_name: '1.2.0'} ],
-  },
-  {
-    desc:     'with draft: false',
-    input:    { draft: false},
-    entries:  [ {name: 'draft', draft: true}, {name: 'non-draft', draft: false} ],
-    output:   [ {name: 'non-draft', draft: false} ],
-  },
-  {
-    desc:     'with draft: true',
-    input:    { draft: true},
-    entries:  [ {name: 'draft', draft: true}, {name: 'non-draft', draft: false} ],
-    output:   [ {name: 'draft', draft: true} ],
-  },
-  {
-    desc:     'with prerelease: false',
-    input:    { prerelease: false},
-    entries:  [ {name: 'prerelease', prerelease: true}, {name: 'non-prerelease', prerelease: false} ],
-    output:   [ {name: 'non-prerelease', prerelease: false} ],
-  },
-  {
-    desc:     'with prerelease: true',
-    input:    { prerelease: true},
-    entries:  [ {name: 'prerelease', prerelease: true}, {name: 'non-prerelease', prerelease: false} ],
-    output:   [ {name: 'prerelease', prerelease: true} ],
-  },
-  {
-    desc:     'with name: "/^v?\\d+\\.\\d+\\.\\d+$/" && draft: false',
-    input:    { name: /^v?\d+\.\d+.\d+$/, draft: false },
-    entries:  [
-      {name: 'latest', draft: false},
-      {name: 'v1.0.0', draft: false},
-      {name: 'v1.1.0', draft: false},
-      {name: '1.2.0', draft: true}
-    ],
-    output:   [
-      {name: 'v1.0.0', draft: false},
-      {name: 'v1.1.0', draft: false},
-    ],
-  },
-  {
-    desc:     'with name: "/^v?\\d+\\.\\d+\\.\\d+$/" && draft: true',
-    input:    { name: /^v?\d+\.\d+.\d+$/, draft: true },
-    entries:  [
-      {name: 'latest', draft: false},
-      {name: 'v1.0.0', draft: false},
-      {name: 'v1.1.0', draft: false},
-      {name: '1.2.0', draft: true}
-    ],
-    output:   [
-      {name: '1.2.0', draft: true}
-    ],
-  },
-  {
-    desc:     'with tag_name: "/^v?\\d+\\.\\d+\\.\\d+$/" && prerelease: false',
-    input:    { tag_name: /^v?\d+\.\d+.\d+$/, prerelease: false },
-    entries:  [
-      {tag_name: 'latest', prerelease: false},
-      {tag_name: 'v1.0.0', prerelease: false},
-      {tag_name: 'v1.1.0', prerelease: false},
-      {tag_name: '1.2.0', prerelease: true}
-    ],
-    output:   [
-      {tag_name: 'v1.0.0', prerelease: false},
-      {tag_name: 'v1.1.0', prerelease: false},
-    ],
-  },
-  {
-    desc:     'with tag_name: "/^v?\\d+\\.\\d+\\.\\d+$/" && prerelease: true',
-    input:    { tag_name: /^v?\d+\.\d+.\d+$/, prerelease: true },
-    entries:  [
-      {tag_name: 'latest', prerelease: false},
-      {tag_name: 'v1.0.0', prerelease: false},
-      {tag_name: 'v1.1.0', prerelease: false},
-      {tag_name: '1.2.0', prerelease: true}
-    ],
-    output:   [
-      {tag_name: '1.2.0', prerelease: true}
-    ],
-  },
-]) {
-  test(`testing Filter ${desc}`, () => {
-    expect(new Filter(input).filter(entries)).toStrictEqual(output);
-  });
-}
+describe('processor', () => {
+  describe('.Filter', () => {
+    describe.each([
+      [{}, [{name: 'foo'}], [{name: 'foo'}]],
+      [{name: null}, [{name: 'a'}, {name: 'b'}], [{name: 'a'}, {name: 'b'}]],
+      [{name: 'foo'}, [{name: 'foo'}, {name: 'bar'}], [{name: 'foo'}]],
+      [
+        {name: /^v?\d+\.\d+.\d+$/},
+        [{name: 'latest'}, {name: 'v1.0.0'}, {name: 'v1.1.0'}, {name: '1.2.0'}],
+        [{name: 'v1.0.0'}, {name: 'v1.1.0'}, {name: '1.2.0'}],
+      ],
+      [
+        {tag_name: 'foo'},
+        [{tag_name: 'foo'}, {tag_name: 'bar'}],
+        [{tag_name: 'foo'}],
+      ],
+      [
+        {tag_name: /^v?\d+\.\d+.\d+$/},
+        [
+          {tag_name: 'latest'},
+          {tag_name: 'v1.0.0'},
+          {tag_name: 'v1.1.0'},
+          {tag_name: '1.2.0'},
+        ],
+        [{tag_name: 'v1.0.0'}, {tag_name: 'v1.1.0'}, {tag_name: '1.2.0'}],
+      ],
+      [
+        {draft: false},
+        [
+          {name: 'draft', draft: true},
+          {name: 'non-draft', draft: false},
+        ],
+        [{name: 'non-draft', draft: false}],
+      ],
+      [
+        {draft: true},
+        [
+          {name: 'draft', draft: true},
+          {name: 'non-draft', draft: false},
+        ],
+        [{name: 'draft', draft: true}],
+      ],
+      [
+        {prerelease: false},
+        [
+          {name: 'prerelease', prerelease: true},
+          {name: 'non-prerelease', prerelease: false},
+        ],
+        [{name: 'non-prerelease', prerelease: false}],
+      ],
+      [
+        {prerelease: true},
+        [
+          {name: 'prerelease', prerelease: true},
+          {name: 'non-prerelease', prerelease: false},
+        ],
+        [{name: 'prerelease', prerelease: true}],
+      ],
+      [
+        {name: /^v?\d+\.\d+.\d+$/, draft: false},
+        [
+          {name: 'latest', draft: false},
+          {name: 'v1.0.0', draft: false},
+          {name: 'v1.1.0', draft: false},
+          {name: '1.2.0', draft: true},
+        ],
+        [
+          {name: 'v1.0.0', draft: false},
+          {name: 'v1.1.0', draft: false},
+        ],
+      ],
+      [
+        {name: /^v?\d+\.\d+.\d+$/, draft: true},
+        [
+          {name: 'latest', draft: false},
+          {name: 'v1.0.0', draft: false},
+          {name: 'v1.1.0', draft: false},
+          {name: '1.2.0', draft: true},
+        ],
+        [{name: '1.2.0', draft: true}],
+      ],
+      [
+        {tag_name: /^v?\d+\.\d+.\d+$/, prerelease: false},
+        [
+          {tag_name: 'latest', prerelease: false},
+          {tag_name: 'v1.0.0', prerelease: false},
+          {tag_name: 'v1.1.0', prerelease: false},
+          {tag_name: '1.2.0', prerelease: true},
+        ],
+        [
+          {tag_name: 'v1.0.0', prerelease: false},
+          {tag_name: 'v1.1.0', prerelease: false},
+        ],
+      ],
+      [
+        {tag_name: /^v?\d+\.\d+.\d+$/, prerelease: true},
+        [
+          {tag_name: 'latest', prerelease: false},
+          {tag_name: 'v1.0.0', prerelease: false},
+          {tag_name: 'v1.1.0', prerelease: false},
+          {tag_name: '1.2.0', prerelease: true},
+        ],
+        [{tag_name: '1.2.0', prerelease: true}],
+      ],
+    ])('new Filter(%j).filter(%j)', (inputs, entries, output) => {
+      it(`returns ${JSON.stringify(output)}`, () => {
+        expect.assertions(1)
+        expect(new Filter(inputs).filter(entries)).toStrictEqual(output)
+      })
+    })
+  })
 
-//
-// Sorter
-//
+  //
+  // Sorter
+  //
 
-for (const { sort, entries, output } of [
-  {
-    sort:     null,
-    entries:  [ {name: 'B'}, {name: 'A'} ],
-    output:   [ {name: 'B'}, {name: 'A'} ],
-  },
-  {
-    sort:     undefined,
-    entries:  [ {name: 'B'}, {name: 'F'} ],
-    output:   [ {name: 'B'}, {name: 'F'} ],
-  },
-  {
-    sort:     [],
-    entries:  [ {name: 'B'}, {name: 'A'} ],
-    output:   [ {name: 'B'}, {name: 'A'} ],
-  },
+  describe('.Sorter', () => {
+    describe.each([
+      [null, [{name: 'B'}, {name: 'A'}], [{name: 'B'}, {name: 'A'}]],
+      [undefined, [{name: 'B'}, {name: 'F'}], [{name: 'B'}, {name: 'F'}]],
+      [[], [{name: 'B'}, {name: 'A'}], [{name: 'B'}, {name: 'A'}]],
 
-  {
-    sort:     ['name'],
-    entries:  [ {name: 'B'}, {name: 'A'} ],
-    output:   [ {name: 'A'}, {name: 'B'} ],
-  },
+      [['name'], [{name: 'B'}, {name: 'A'}], [{name: 'A'}, {name: 'B'}]],
 
-  {
-    sort:     [['name', 'A']],
-    entries:  [ {name: 'B'}, {name: 'A'} ],
-    output:   [ {name: 'A'}, {name: 'B'} ],
-  },
+      [[['name', 'A']], [{name: 'B'}, {name: 'A'}], [{name: 'A'}, {name: 'B'}]],
 
-  {
-    sort:     [['name', 'D']],
-    entries:  [ {name: 'A'}, {name: 'B'} ],
-    output:   [ {name: 'B'}, {name: 'A'} ],
-  },
+      [[['name', 'D']], [{name: 'A'}, {name: 'B'}], [{name: 'B'}, {name: 'A'}]],
 
-  {
-    sort:     ['name', 'id'],
-    entries:  [
-      {name: 'B', id: 2},
-      {name: 'B', id: 1},
-      {name: 'A', id: 2},
-      {name: 'A', id: 1},
-    ],
-    output:  [
-      {name: 'A', id: 1},
-      {name: 'A', id: 2},
-      {name: 'B', id: 1},
-      {name: 'B', id: 2},
-    ],
-  },
+      [
+        ['name', 'id'],
+        [
+          {name: 'B', id: 2},
+          {name: 'B', id: 1},
+          {name: 'A', id: 2},
+          {name: 'A', id: 1},
+        ],
+        [
+          {name: 'A', id: 1},
+          {name: 'A', id: 2},
+          {name: 'B', id: 1},
+          {name: 'B', id: 2},
+        ],
+      ],
 
-  {
-    sort:     [['name', 'A'], ['id', 'A']],
-    entries:  [
-      {name: 'B', id: 2},
-      {name: 'B', id: 1},
-      {name: 'A', id: 2},
-      {name: 'A', id: 1},
-    ],
-    output:  [
-      {name: 'A', id: 1},
-      {name: 'A', id: 2},
-      {name: 'B', id: 1},
-      {name: 'B', id: 2},
-    ],
-  },
+      [
+        [
+          ['name', 'A'],
+          ['id', 'A'],
+        ],
+        [
+          {name: 'B', id: 2},
+          {name: 'B', id: 1},
+          {name: 'A', id: 2},
+          {name: 'A', id: 1},
+        ],
+        [
+          {name: 'A', id: 1},
+          {name: 'A', id: 2},
+          {name: 'B', id: 1},
+          {name: 'B', id: 2},
+        ],
+      ],
 
-  {
-    sort:     [['name', 'A'], ['id', 'D']],
-    entries:  [
-      {name: 'B', id: 1},
-      {name: 'B', id: 2},
-      {name: 'A', id: 1},
-      {name: 'A', id: 2},
-    ],
-    output:  [
-      {name: 'A', id: 2},
-      {name: 'A', id: 1},
-      {name: 'B', id: 2},
-      {name: 'B', id: 1},
-    ],
-  },
+      [
+        [
+          ['name', 'A'],
+          ['id', 'D'],
+        ],
+        [
+          {name: 'B', id: 1},
+          {name: 'B', id: 2},
+          {name: 'A', id: 1},
+          {name: 'A', id: 2},
+        ],
+        [
+          {name: 'A', id: 2},
+          {name: 'A', id: 1},
+          {name: 'B', id: 2},
+          {name: 'B', id: 1},
+        ],
+      ],
 
-  {
-    sort:     [['name', 'D'], ['id', 'A']],
-    entries:  [
-      {name: 'A', id: 2},
-      {name: 'A', id: 1},
-      {name: 'B', id: 2},
-      {name: 'B', id: 1},
-    ],
-    output:  [
-      {name: 'B', id: 1},
-      {name: 'B', id: 2},
-      {name: 'A', id: 1},
-      {name: 'A', id: 2},
-    ],
-  },
+      [
+        [
+          ['name', 'D'],
+          ['id', 'A'],
+        ],
+        [
+          {name: 'A', id: 2},
+          {name: 'A', id: 1},
+          {name: 'B', id: 2},
+          {name: 'B', id: 1},
+        ],
+        [
+          {name: 'B', id: 1},
+          {name: 'B', id: 2},
+          {name: 'A', id: 1},
+          {name: 'A', id: 2},
+        ],
+      ],
 
-  {
-    sort:     [['name', 'D'], ['id', 'D']],
-    entries:  [
-      {name: 'A', id: 1},
-      {name: 'A', id: 2},
-      {name: 'B', id: 1},
-      {name: 'B', id: 2},
-    ],
-    output:  [
-      {name: 'B', id: 2},
-      {name: 'B', id: 1},
-      {name: 'A', id: 2},
-      {name: 'A', id: 1},
-    ],
-  },
+      [
+        [
+          ['name', 'D'],
+          ['id', 'D'],
+        ],
+        [
+          {name: 'A', id: 1},
+          {name: 'A', id: 2},
+          {name: 'B', id: 1},
+          {name: 'B', id: 2},
+        ],
+        [
+          {name: 'B', id: 2},
+          {name: 'B', id: 1},
+          {name: 'A', id: 2},
+          {name: 'A', id: 1},
+        ],
+      ],
 
-  {
-    sort:     [['id', 'A'], ['name', 'A']],
-    entries:  [
-      {name: 'B', id: 2},
-      {name: 'A', id: 2},
-      {name: 'B', id: 1},
-      {name: 'A', id: 1},
-    ],
-    output:  [
-      {name: 'A', id: 1},
-      {name: 'B', id: 1},
-      {name: 'A', id: 2},
-      {name: 'B', id: 2},
-    ],
-  },
+      [
+        [
+          ['id', 'A'],
+          ['name', 'A'],
+        ],
+        [
+          {name: 'B', id: 2},
+          {name: 'A', id: 2},
+          {name: 'B', id: 1},
+          {name: 'A', id: 1},
+        ],
+        [
+          {name: 'A', id: 1},
+          {name: 'B', id: 1},
+          {name: 'A', id: 2},
+          {name: 'B', id: 2},
+        ],
+      ],
 
-  {
-    sort:     [['id', 'A'], ['name', 'D']],
-    entries:  [
-      {name: 'A', id: 2},
-      {name: 'B', id: 2},
-      {name: 'A', id: 1},
-      {name: 'B', id: 1},
-    ],
-    output:  [
-      {name: 'B', id: 1},
-      {name: 'A', id: 1},
-      {name: 'B', id: 2},
-      {name: 'A', id: 2},
-    ],
-  },
+      [
+        [
+          ['id', 'A'],
+          ['name', 'D'],
+        ],
+        [
+          {name: 'A', id: 2},
+          {name: 'B', id: 2},
+          {name: 'A', id: 1},
+          {name: 'B', id: 1},
+        ],
+        [
+          {name: 'B', id: 1},
+          {name: 'A', id: 1},
+          {name: 'B', id: 2},
+          {name: 'A', id: 2},
+        ],
+      ],
 
-  {
-    sort:     [['id', 'D'], ['name', 'A']],
-    entries:  [
-      {name: 'B', id: 1},
-      {name: 'A', id: 1},
-      {name: 'B', id: 2},
-      {name: 'A', id: 2},
-    ],
-    output:  [
-      {name: 'A', id: 2},
-      {name: 'B', id: 2},
-      {name: 'A', id: 1},
-      {name: 'B', id: 1},
-    ],
-  },
+      [
+        [
+          ['id', 'D'],
+          ['name', 'A'],
+        ],
+        [
+          {name: 'B', id: 1},
+          {name: 'A', id: 1},
+          {name: 'B', id: 2},
+          {name: 'A', id: 2},
+        ],
+        [
+          {name: 'A', id: 2},
+          {name: 'B', id: 2},
+          {name: 'A', id: 1},
+          {name: 'B', id: 1},
+        ],
+      ],
 
-  {
-    sort:     [['id', 'D'], ['name', 'D']],
-    entries:  [
-      {name: 'A', id: 1},
-      {name: 'B', id: 1},
-      {name: 'A', id: 2},
-      {name: 'B', id: 2},
-    ],
-    output:  [
-      {name: 'B', id: 2},
-      {name: 'A', id: 2},
-      {name: 'B', id: 1},
-      {name: 'A', id: 1},
-    ],
-  },
+      [
+        [
+          ['id', 'D'],
+          ['name', 'D'],
+        ],
+        [
+          {name: 'A', id: 1},
+          {name: 'B', id: 1},
+          {name: 'A', id: 2},
+          {name: 'B', id: 2},
+        ],
+        [
+          {name: 'B', id: 2},
+          {name: 'A', id: 2},
+          {name: 'B', id: 1},
+          {name: 'A', id: 1},
+        ],
+      ],
 
-  {
-    sort:     [['name', 'D'], ['id', 'D']],
-    entries:  [
-      {name: 'A', id: 1},
-      {name: 'A', id: 2, tag: "X"},
-      {name: 'A', id: 2, tag: "Y"},
-      {name: 'B', id: 1},
-      {name: 'B', id: 2},
-    ],
-    output:  [
-      {name: 'B', id: 2},
-      {name: 'B', id: 1},
-      {name: 'A', id: 2, tag: "X"},
-      {name: 'A', id: 2, tag: "Y"},
-      {name: 'A', id: 1},
-    ],
-  },
+      [
+        [
+          ['name', 'D'],
+          ['id', 'D'],
+        ],
+        [
+          {name: 'A', id: 1},
+          {name: 'A', id: 2, tag: 'X'},
+          {name: 'A', id: 2, tag: 'Y'},
+          {name: 'B', id: 1},
+          {name: 'B', id: 2},
+        ],
+        [
+          {name: 'B', id: 2},
+          {name: 'B', id: 1},
+          {name: 'A', id: 2, tag: 'X'},
+          {name: 'A', id: 2, tag: 'Y'},
+          {name: 'A', id: 1},
+        ],
+      ],
 
-  {
-    sort:     [['name', 'D'], ['id', 'D']],
-    entries:  [
-      {name: 'A', id: 1},
-      {name: 'A', id: 2, tag: "Y"},
-      {name: 'A', id: 2, tag: "X"},
-      {name: 'B', id: 1},
-      {name: 'B', id: 2},
-    ],
-    output:  [
-      {name: 'B', id: 2},
-      {name: 'B', id: 1},
-      {name: 'A', id: 2, tag: "Y"},
-      {name: 'A', id: 2, tag: "X"},
-      {name: 'A', id: 1},
-    ],
-  },
-]) {
-  test(`testing Sorter with sort: ${JSON.stringify(sort)}`, () => {
-    expect(new Sorter(sort).sort(entries)).toStrictEqual(output);
-  });
-}
+      [
+        [
+          ['name', 'D'],
+          ['id', 'D'],
+        ],
+        [
+          {name: 'A', id: 1},
+          {name: 'A', id: 2, tag: 'Y'},
+          {name: 'A', id: 2, tag: 'X'},
+          {name: 'B', id: 1},
+          {name: 'B', id: 2},
+        ],
+        [
+          {name: 'B', id: 2},
+          {name: 'B', id: 1},
+          {name: 'A', id: 2, tag: 'Y'},
+          {name: 'A', id: 2, tag: 'X'},
+          {name: 'A', id: 1},
+        ],
+      ],
+    ])('new Sorter(%j).sort(%j)', (sort, entries, output) => {
+      it(`returns ${JSON.stringify(output)}`, () => {
+        expect.assertions(1)
+        expect(new Sorter(sort).sort(entries)).toStrictEqual(output)
+      })
+    })
+  })
 
-//
-// Selector
-//
+  //
+  // Selector
+  //
 
-for (const { keys, entries, output } of [
-  {
-    keys:     null,
-    entries:  [ {name: 'foo', id: 1234} ],
-    output:   [ {name: 'foo', id: 1234} ],
-  },
-  {
-    keys:     undefined,
-    entries:  [ {name: 'foo', id: 1234} ],
-    output:   [ {name: 'foo', id: 1234} ],
-  },
-  {
-    keys:     ["name"],
-    entries:  [ {name: 'foo', id: 1234, url: 'https://example.com'} ],
-    output:   [ {name: 'foo'} ],
-  },
-  {
-    keys:     ["url", "name"],
-    entries:  [ {name: 'foo', id: 1234, url: 'https://example.com'} ],
-    output:   [ {name: 'foo', url: 'https://example.com'} ],
-  },
-  {
-    keys:     ["url", "id"],
-    entries:  [
-      {name: 'v1.1', id: 1234, url: 'https://example.com/v1.1'},
-      {name: 'v1.2', id: 1235, url: 'https://example.com/v1.2'},
-    ],
-    output:   [
-      {id: 1234, url: 'https://example.com/v1.1'},
-      {id: 1235, url: 'https://example.com/v1.2'},
-    ],
-  },
-]) {
-  test(`testing Selector with keys: ${JSON.stringify(keys)}`, () => {
-    expect(new Selector(keys).select(entries)).toStrictEqual(output);
-  });
-}
+  describe('.Selector', () => {
+    describe.each([
+      [null, [{name: 'foo', id: 1234}], [{name: 'foo', id: 1234}]],
+      [undefined, [{name: 'foo', id: 1234}], [{name: 'foo', id: 1234}]],
+      [
+        ['name'],
+        [{name: 'foo', id: 1234, url: 'https://x.com'}],
+        [{name: 'foo'}],
+      ],
+      [
+        ['url', 'name'],
+        [{name: 'foo', id: 1234, url: 'https://x.com'}],
+        [{name: 'foo', url: 'https://x.com'}],
+      ],
+      [
+        ['url', 'id'],
+        [
+          {name: 'v1.1', id: 1234, url: 'http://x.com/v1.1'},
+          {name: 'v1.2', id: 1235, url: 'http://x.com/v1.2'},
+        ],
+        [
+          {id: 1234, url: 'http://x.com/v1.1'},
+          {id: 1235, url: 'http://x.com/v1.2'},
+        ],
+      ],
+    ])('new Selector(%j).select(%j)', (select, entries, output) => {
+      it(`returns ${JSON.stringify(output)}`, () => {
+        expect.assertions(1)
+        expect(new Selector(select).select(entries)).toStrictEqual(output)
+      })
+    })
+  })
 
-//
-// Slicer
-//
+  //
+  // Slicer
+  //
 
-for (const { slice, entries, output } of [
-  {
-    slice:   null,
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  },
+  describe('.Slicer', () => {
+    describe.each([
+      [null, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]],
 
-  {
-    slice:   undefined,
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  },
+      [
+        undefined,
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      ],
 
-  {
-    slice:   {type: 'A'},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  },
+      [
+        {type: 'A'},
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      ],
 
-  {
-    slice:   {type: 'A'},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  },
+      [
+        {type: 'A'},
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      ],
 
-  {
-    slice:   {type: 'F'},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0],
-  },
+      [{type: 'F'}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0]],
 
-  {
-    slice:   {type: 'F', count: 1},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0],
-  },
+      [{type: 'F', count: 1}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0]],
 
-  {
-    slice:   {type: 'F', count: 4},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0, 1, 2, 3],
-  },
+      [{type: 'F', count: 4}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0, 1, 2, 3]],
 
-  {
-    slice:   {type: 'F', count: 123},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  },
+      [
+        {type: 'F', count: 123},
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      ],
 
-  {
-    slice:   {type: 'L'},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [9],
-  },
+      [{type: 'L'}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [9]],
 
-  {
-    slice:   {type: 'L', count: 1},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [9],
-  },
+      [{type: 'L', count: 1}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [9]],
 
-  {
-    slice:   {type: 'L', count: 4},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [6, 7, 8, 9],
-  },
+      [{type: 'L', count: 4}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [6, 7, 8, 9]],
 
-  {
-    slice:   {type: 'L', count: 123},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  },
+      [
+        {type: 'L', count: 123},
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      ],
 
-  {
-    slice:   {type: 'R'},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  },
+      [
+        {type: 'R'},
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      ],
 
-  {
-    slice:   {type: 'R', to: 4},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [0, 1, 2, 3, 4],
-  },
+      [{type: 'R', to: 4}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0, 1, 2, 3, 4]],
 
-  {
-    slice:   {type: 'R', from: 4},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [4, 5, 6, 7, 8, 9],
-  },
+      [
+        {type: 'R', from: 4},
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [4, 5, 6, 7, 8, 9],
+      ],
 
-  {
-    slice:   {type: 'R', from: 4, to: 7},
-    entries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    output:  [4, 5, 6, 7],
-  },
-]) {
-  test(`testing Slicer with slice: ${JSON.stringify(slice)}`, () => {
-    expect(new Slicer(slice).slice(entries)).toStrictEqual(output);
-  });
-}
+      [
+        {type: 'R', from: 4, to: 7},
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        [4, 5, 6, 7],
+      ],
+    ])('new Slicer(%j).slice(%j)', (slice, entries, output) => {
+      it(`returns ${JSON.stringify(output)}`, () => {
+        expect.assertions(1)
+        expect(new Slicer(slice).slice(entries)).toStrictEqual(output)
+      })
+    })
+  })
 
-//
-// Processor
-//
-for (const {inputs, entries, output} of [
-  {
-    inputs: {},
-    entries: [],
-    output: []
-  },
+  //
+  // Processor
+  //
+  describe('.Processor', () => {
+    describe.each([
+      [{}, [], []],
 
-  {
-    inputs: {},
-    entries: [1, 2, 3, 4],
-    output:  [1, 2, 3, 4],
-  },
+      [{}, [1, 2, 3, 4], [1, 2, 3, 4]],
 
-  {
-    inputs: {
-      name: null,
-      tag_name: null,
-      draft: null,
-      prerelease: null,
-      sort: null,
-      order: "A",
-      slice: {
-        type: "A"
-      },
-      select: null
-    },
-    entries: [1, 2, 3, 4],
-    output:  [1, 2, 3, 4],
-  },
+      [
+        {
+          name: null,
+          tag_name: null,
+          draft: null,
+          prerelease: null,
+          sort: null,
+          order: 'A',
+          slice: {
+            type: 'A',
+          },
+          select: null,
+        },
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+      ],
 
-  {
-    inputs: {
-      name: 'foo'
-    },
-    entries: [
-      {},
-    ],
-    output: [
-    ]
-  },
+      [
+        {
+          name: 'foo',
+        },
+        [{}],
+        [],
+      ],
 
-  {
-    inputs: {
-      name: 'foo',
-    },
-    entries: [
-      {name: 'foo'},
-      {name: 'bar'},
-    ],
-    output: [
-      {name: 'foo'},
-    ]
-  },
+      [
+        {
+          name: 'foo',
+        },
+        [{name: 'foo'}, {name: 'bar'}],
+        [{name: 'foo'}],
+      ],
 
-  {
-    inputs: {
-      name: /^v?\d+\.\d+$/,
-      sort: [['name', 'D']],
-      select: ['id', 'url'],
-      slice: {type: 'F', count: 3},
-    },
-    entries: [
-      {name: 'v1.0',   id: 1, url: 'https://hello.org/v1.0'},
-      {name: 'v2.0',   id: 3, url: 'https://hello.org/v2.0'},
-      {name: 'master', id: 5, url: 'https://hello.org/master'},
-      {name: 'v1.1',   id: 2, url: 'https://hello.org/v1.1'},
-      {name: 'v2.1',   id: 4, url: 'https://hello.org/v2.1'},
-    ],
-    output: [
-      {id: 4, url: 'https://hello.org/v2.1'},
-      {id: 3, url: 'https://hello.org/v2.0'},
-      {id: 2, url: 'https://hello.org/v1.1'},
-    ]
-  },
-]) {
-  test(`testing Processor with inputs: ${JSON.stringify(inputs)}`, () => {
-    expect(new Processor(inputs).process(entries)).toStrictEqual(output);
-  });
-}
+      [
+        {
+          name: /^v?\d+\.\d+$/,
+          sort: [['name', 'D']],
+          select: ['id', 'url'],
+          slice: {type: 'F', count: 3},
+        },
+        [
+          {name: 'v1.0', id: 1, url: 'http://x.org/v1.0'},
+          {name: 'v2.0', id: 3, url: 'http://x.org/v2.0'},
+          {name: 'master', id: 5, url: 'http://x.org/master'},
+          {name: 'v1.1', id: 2, url: 'http://x.org/v1.1'},
+          {name: 'v2.1', id: 4, url: 'http://x.org/v2.1'},
+        ],
+        [
+          {id: 4, url: 'http://x.org/v2.1'},
+          {id: 3, url: 'http://x.org/v2.0'},
+          {id: 2, url: 'http://x.org/v1.1'},
+        ],
+      ],
+    ])('new Processor(%j).process(%j)', (inputs, entries, output) => {
+      it(`returns ${JSON.stringify(output)}`, () => {
+        expect.assertions(1)
+        expect(new Processor(inputs).process(entries)).toStrictEqual(output)
+      })
+    })
+  })
+})
+
+// vim: set ft=javascript ts=2 sw=2 sts=2:

@@ -1,16 +1,18 @@
-"use strict";
+'use strict'
 
-const core = require('@actions/core');
+/* eslint camelcase: [error, {properties: "never"}] */
+
+const core = require('@actions/core')
 
 class ValidationError extends Error {
   static make(key, value) {
     return new ValidationError(
       `validation failed for input ${key}: ${JSON.stringify(value)}`
-    );
+    )
   }
-};
+}
 
-class InternalError extends Error { };
+class InternalError extends Error {}
 
 const validate = {
   sortable: [
@@ -29,7 +31,7 @@ const validate = {
     'published_at',
     'tarball_url',
     'zipball_url',
-    'body'
+    'body',
   ],
 
   selectable: [
@@ -50,139 +52,145 @@ const validate = {
     'assets',
     'tarball_url',
     'zipball_url',
-    'body'
+    'body',
   ],
 
-  stringOrRegexp: function (value) {
-    const re = /^(?:\/(.*)\/([a-z]*))$/;
-    const match = value.match(re);
+  stringOrRegexp(value) {
+    const re = /^(?:\/(.*)\/([a-z]*))$/
+    const match = value.match(re)
     if (match) {
-      return new RegExp(match[1], match[2]);
+      return new RegExp(match[1], match[2])
     }
-    return (['', '*'].includes(value) ? null : value);
+    return ['', '*'].includes(value) ? null : value
   },
 
-  intOrNull: function (value, key) {
-    const re = /^\s*(\d+|)\s*$/;
-    const match = value.match(re);
+  intOrNull(value, key) {
+    const re = /^\s*(\d+|)\s*$/
+    const match = value.match(re)
     if (!match) {
-      throw ValidationError.make(key, value);
+      throw ValidationError.make(key, value)
     }
-    return (match[1] ? parseInt(match[1]) : null);
+    return match[1] ? parseInt(match[1]) : null
   },
 
-  bool: function (value, key) {
-    const choices = {'': null, '*': null, 'true': true, 'false': false };
+  bool(value, key) {
+    const choices = {'': null, '*': null, true: true, false: false}
     if (choices.hasOwnProperty(value)) {
-      return choices[value];
+      return choices[value]
     }
-    throw ValidationError.make(key, value);
+    throw ValidationError.make(key, value)
   },
 
-  testWithRegExp: function (re, value, key) {
+  testWithRegExp(re, value, key) {
     if (!re.test(value)) {
-      throw ValidationError.make(key, value);
+      throw ValidationError.make(key, value)
     }
-    return value;
+    return value
   },
 
-  token: function (value) {
-    return (value ? value : null);
+  token(value) {
+    return value ? value : null
   },
 
-  owner: function (value) {
-    const re = /^(?:[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38})$/i;
-    return this.testWithRegExp(re, value, 'owner');
+  owner(value) {
+    const re = /^(?:[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38})$/i
+    return this.testWithRegExp(re, value, 'owner')
   },
 
-  repo: function (value) {
-    const re = /^(?:(?:\.?[_a-z\d-][_a-z\d\.-]*)|(?:\.\.[_a-z\d\.-]+))$/i;
-    return this.testWithRegExp(re, value, 'repo');
+  repo(value) {
+    const re = /^(?:(?:\.?[_a-z\d-][_a-z\d.-]*)|(?:.\.[_a-z\d.-]+))$/i
+    return this.testWithRegExp(re, value, 'repo')
   },
 
-  per_page: function (value) {
-    const num = this.intOrNull(value, 'per_page');
+  per_page(value) {
+    const num = this.intOrNull(value, 'per_page')
     if (num > 100) {
-      throw ValidationError.make('per_page', value);
+      throw ValidationError.make('per_page', value)
     }
-    return num;
+    return num
   },
 
-  max_entries: function (value) {
-    return this.intOrNull(value, 'max_entries');
+  max_entries(value) {
+    return this.intOrNull(value, 'max_entries')
   },
 
-  name: function (value) {
-    return this.stringOrRegexp(value);
+  name(value) {
+    return this.stringOrRegexp(value)
   },
 
-  tag_name: function (value) {
-    return this.stringOrRegexp(value);
+  tag_name(value) {
+    return this.stringOrRegexp(value)
   },
 
-  draft: function (value) {
-    return this.bool(value, 'draft');
+  draft(value) {
+    return this.bool(value, 'draft')
   },
 
-  prerelease: function (value) {
-    return this.bool(value, 'prerelease');
+  prerelease(value) {
+    return this.bool(value, 'prerelease')
   },
 
-  sort: function (value, defaultOrder='A') {
-
-    const trimmed = value.trim();
+  sort(value, defaultOrder = 'A') {
+    const trimmed = value.trim()
 
     if (!trimmed) {
-      return null;
+      return null
     }
 
-    const re = new RegExp(`^(${this.sortable.join('|')})(?:(?:\\s+|\\s*=\\s*)(A(?:SC)?|D(?:E?SC)?))?$`, 'i');
-    const sep = /\s*,\s*/;
-    const strings = trimmed.split(sep);
+    const re = new RegExp(
+      `^(${this.sortable.join(
+        '|'
+      )})(?:(?:\\s+|\\s*=\\s*)(A(?:SC)?|D(?:E?SC)?))?$`,
+      'i'
+    )
+    const sep = /\s*,\s*/
+    const strings = trimmed.split(sep)
 
-    var fields = [];
+    const fields = []
     for (const string of strings) {
-      const match = string.match(re);
+      const match = string.match(re)
       if (!match) {
-        throw ValidationError.make('sort', value);
+        throw ValidationError.make('sort', value)
       }
-      const key = match[1].toLowerCase();
-      const ord = (match[2] ? match[2] : defaultOrder).substring(0,1).toUpperCase();
-      fields.push([key, ord]);
+      const key = match[1].toLowerCase()
+      const ord = (match[2] ? match[2] : defaultOrder)
+        .substring(0, 1)
+        .toUpperCase()
+      fields.push([key, ord])
     }
-    return fields;
+    return fields
   },
 
-  order: function (value) {
-    const re = /^\s*(A(?:SC)?|D(?:E?SC)?|)\s*$/i;
-    const match = value.match(re);
+  order(value) {
+    const re = /^\s*(A(?:SC)?|D(?:E?SC)?|)\s*$/i
+    const match = value.match(re)
 
     if (!match) {
-      throw ValidationError.make('order', value);
+      throw ValidationError.make('order', value)
     }
 
-    return (match[1] ? match[1] : 'A').substring(0,1).toUpperCase();
+    return (match[1] ? match[1] : 'A').substring(0, 1).toUpperCase()
   },
 
-  select: function (value){
-    const trimmed = value.trim();
+  select(value) {
+    const trimmed = value.trim()
 
     if (!trimmed || trimmed === '*') {
-      return null;
+      return null
     }
 
-    const sep = /(?:\s*,\s*)|\s+/;
-    const strings = trimmed.split(sep);
-    const invalid = strings.filter((string) => !this.selectable.includes(string));
+    const sep = /(?:\s*,\s*)|\s+/
+    const strings = trimmed.split(sep)
+    const invalid = strings.filter(string => !this.selectable.includes(string))
 
     if (invalid.length > 0) {
-      throw ValidationError.make('select', value);
+      throw ValidationError.make('select', value)
     }
 
-    return strings;
+    return strings
   },
 
-  slice: function (value) {
+  slice(value) {
     const re = new RegExp(
       '^\\s*(' +
         '(?:(?<all>A)(?:LL)?)' +
@@ -191,27 +199,29 @@ const validate = {
         '|' +
         '(?:(?<from>\\d+)\\s*\\.\\.\\.\\s*(?<to>\\d+|))' +
         '|' +
-        ''  +
-      ')\\s*$','i');
-    const match = value.match(re);
+        '' +
+        ')\\s*$',
+      'i'
+    )
+    const match = value.match(re)
 
     if (!match) {
-      throw ValidationError.make('slice', value);
+      throw ValidationError.make('slice', value)
     }
 
-    const groups = match.groups;
+    const groups = match.groups
 
     if (!match[1] || groups.all) {
-      return { type: 'A' };
+      return {type: 'A'}
     }
 
     for (const type of [groups.first, groups.last]) {
       if (type) {
-        const count = groups.count;
+        const count = groups.count
         return {
           type: type.toUpperCase(),
-          count: (count ? parseInt(count) : 1)
-        };
+          count: count ? parseInt(count) : 1,
+        }
       }
     }
 
@@ -219,32 +229,33 @@ const validate = {
       return {
         type: 'R',
         from: parseInt(groups.from),
-        to: (groups.to ? parseInt(groups.to) : null),
-      };
+        to: groups.to ? parseInt(groups.to) : null,
+      }
     }
 
-
-    throw new InternalError(`slice: ${JSON.stringify(value)}`);
+    throw new InternalError(`slice: ${JSON.stringify(value)}`)
   },
-};
+}
 
 const getInputs = () => {
-  const order = validate.order(core.getInput('order'));
+  const order = validate.order(core.getInput('order'))
   return {
-    token:       validate.token(core.getInput('token')),
-    owner:       validate.owner(core.getInput('owner')),
-    repo:        validate.repo(core.getInput('repo')),
-    name:        validate.name(core.getInput('name')),
-    per_page:    validate.per_page(core.getInput('per_page')),
+    token: validate.token(core.getInput('token')),
+    owner: validate.owner(core.getInput('owner')),
+    repo: validate.repo(core.getInput('repo')),
+    name: validate.name(core.getInput('name')),
+    per_page: validate.per_page(core.getInput('per_page')),
     max_entries: validate.max_entries(core.getInput('max_entries')),
-    tag_name:    validate.tag_name(core.getInput('tag_name')),
-    draft:       validate.draft(core.getInput('draft')),
-    prerelease:  validate.prerelease(core.getInput('prerelease')),
-    sort:        validate.sort(core.getInput('sort'), order),
-    order:       order,
-    slice:       validate.slice(core.getInput('slice')),
-    select:      validate.select(core.getInput('select')),
-  };
-};
+    tag_name: validate.tag_name(core.getInput('tag_name')),
+    draft: validate.draft(core.getInput('draft')),
+    prerelease: validate.prerelease(core.getInput('prerelease')),
+    sort: validate.sort(core.getInput('sort'), order),
+    order,
+    slice: validate.slice(core.getInput('slice')),
+    select: validate.select(core.getInput('select')),
+  }
+}
 
-module.exports = { getInputs, validate, ValidationError, InternalError };
+module.exports = {getInputs, validate, ValidationError, InternalError}
+
+// vim: set ft=javascript ts=2 sw=2 sts=2:

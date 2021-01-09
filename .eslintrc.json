@@ -1,0 +1,20 @@
+{
+    "plugins": ["jest", "github"],
+    "extends": ["plugin:github/recommended"],
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 8
+    },
+    "overrides": [
+      {
+        "files": ["**/*.test.js"],
+        "extends": ["plugin:jest/all"]
+      }
+    ],
+    "rules": {
+    }
+}

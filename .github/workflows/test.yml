@@ -1,0 +1,68 @@
+---
+name: Tests
+
+on:
+    - pull_request
+    - push
+
+jobs:
+    build:
+        name: Build dist/index.js
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12.x
+            - uses: actions/checkout@v2
+            - run: npm ci
+            - run: npm run build
+            - run: __tests__/verify-no-unstaged-changes.sh
+
+    unit:
+        name: Unit Tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12.x
+            - uses: actions/checkout@v2
+            - run: npm ci
+            - run: npm run test
+
+    test:
+        name: Action Test
+        strategy:
+            fail-fast: false
+            matrix:
+                runs-on: [ubuntu-latest, macos-latest]
+
+        runs-on: ${{ matrix.runs-on }}
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            # Oldest
+            - id: v0latest
+              name: Get latest of v0.x.x
+              uses: ./
+              with:
+                  token: ${{ secrets.GET_RELEASES_TOKEN }}
+                  owner: ptomulik
+                  repo: github-action-get-releases
+                  tag_name: '/^v0\.\d+\.\d+$/'
+                  select: id, tag_name, name
+                  sort: tag_name DSC
+                  slice: first
+
+            - name: Print latest v0.x.x
+              run: |
+                  jq '' <<'!'
+                  ${{ steps.v0latest.outputs.json }}
+                  !
+                  if [ '${{ steps.v0latest.outputs.count }}' -ne 1  ]; then
+                    echo 'count: ${{ steps.v0latest.outputs.count }} != 1';
+                    false;
+                  fi
+
+# vim: set ft=yaml ts=4 sw=4 sts=2:

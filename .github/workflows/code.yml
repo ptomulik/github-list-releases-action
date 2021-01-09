@@ -1,0 +1,20 @@
+---
+name: Code Quality
+
+on:
+    - pull_request
+    - push
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12.x
+            - uses: actions/checkout@v2
+            - run: npm ci
+            - run: npm run -- prettier --check '**/*.js'
+            - run: npm run -- eslint '**/*.js'
+
+# vim: set ft=yaml ts=4 sw=4 sts=4:
