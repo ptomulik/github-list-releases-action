@@ -1,0 +1,26 @@
+{
+  "name": "@ptomulik/github-action-get-releases",
+  "version": "0.1.0",
+  "description": "GitHub action to retrieve releases from a remote repository",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "jest",
+    "build": "ncc build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ptomulik/github-action-get-releases"
+  },
+  "keywords": [],
+  "author": "Paweł Tomulik <ptomulik@meil.pw.edu.pl>",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "@octokit/rest": "^18.0.12"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.26.2",
+    "jest": "^26.6.3"
+  }
+}

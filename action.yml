@@ -1,0 +1,65 @@
+name: 'Get Releases'
+description: 'Get releases JSON from remote repository using GitHub API.'
+inputs:
+
+  token:
+    description: 'Personal token.'
+    required: false
+
+  owner:
+    description: 'Repository owner.'
+    required: true
+
+  repo:
+    description: 'Repository name.'
+    required: true
+
+  per_page:
+    description: 'Page size.'
+    required: false
+
+  max_entries:
+    description: 'Max number of entries retrieved from remote repository.'
+    required: false
+
+  name:
+    description: 'String used to filter retrieved releases by name.'
+    required: false
+
+  tag_name:
+    description: 'String used to filter retrieved releases by tag_name.'
+    required: false
+
+  draft:
+    description: 'Value used to filter retrieved releases by draft status.'
+    required: false
+
+  prerelease:
+    description: 'Value used to filter retrieved releases by prerelease status.'
+    required: false
+
+  sort:
+    description: 'List of properties used for sorting the retrieved releases.'
+    required: false
+
+  order:
+    description: 'Default sort order.'
+    required: false
+
+  select:
+    description: 'List of properties to be included.'
+    required: false
+
+  slice:
+    description: 'The range of entries to be returned.'
+    required: false
+outputs:
+  json:
+    description: 'The result as json string.'
+  base64:
+    description: 'The result as BASE64 encoded json string.'
+  count:
+    description: 'The number of entries in the result.'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
