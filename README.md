@@ -146,11 +146,12 @@ Allows selecting prereleases/non-prereleases. Suported values are ``false``,
 
 ### sort
 
-Comma-separated list of property names, each optionally followed by order
-specifier - ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
-(descending) that are used to sort the resultant array. The order of keys in
-[sort](#sort) is immportant. If order specifier is ommited, the default
-[order](#order) is used.
+Comma-separated list of property names that shall be used to sort the resultant
+array. Each property may optionally be followed by order specifier -
+``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'`` (descending). If
+order specifier is ommited for given key, the default [order](#order) is used.
+
+**Note**: the order of keys in [sort](#sort) is immportant.
 
 **Supported (sortable) properties**:
 
