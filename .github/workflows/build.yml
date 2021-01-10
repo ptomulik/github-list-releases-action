@@ -1,0 +1,21 @@
+---
+name: Build
+
+on:
+    - pull_request
+    - push
+
+jobs:
+    build:
+        name: dist/index.js
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12.x
+            - uses: actions/checkout@v2
+            - run: npm ci
+            - run: npm run build
+            - run: __tests__/verify-no-unstaged-changes.sh
+
+# vim: set ft=yaml ts=4 sw=4 sts=2:

@@ -3,6 +3,11 @@
 This action retrieves an array of releases from a remote GitHub repository
 returning it as JSON content.
 
+![tests](https://github.com/ptomulik/github-action-get-releases/workflows/Tests/badge.svg?branch=master)
+![build](https://github.com/ptomulik/github-action-get-releases/workflows/Build/badge.svg?branch=master)
+![code](https://github.com/ptomulik/github-action-get-releases/workflows/Code%20Quality/badge.svg?branch=master)
+
+
 ## Inputs
 
 ### token
