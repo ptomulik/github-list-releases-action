@@ -384,7 +384,7 @@ jobs:
                   !
                   echo 'count: ${{ steps.releases.outputs.count }}'
 
-# vim: set ft=yaml ts=4 sw=4 sts=4 et:
+# vim: set ft=yaml ts=4 sw=4 sts=2 et:
 ```
 
 Console output for workflow's default inputs:
