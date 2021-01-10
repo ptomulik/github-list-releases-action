@@ -148,7 +148,9 @@ Allows selecting prereleases/non-prereleases. Suported values are ``false``,
 
 Comma-separated list of property names, each optionally followed by order
 specifier - ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
-(descending). Used to sort the resultant array.'
+(descending) that are used to sort the resultant array. The order of keys in
+[sort](#sort) is immportant. If order specifier is ommited, the default
+[order](#order) is used.
 
 **Supported (sortable) properties**:
 
@@ -176,8 +178,8 @@ Sort by ``id`` in descending order.
         sort: 'id DSC'
 ```
 
-Sort by ``draft`` status in ascendig order (``false`` goes first) then by
-``name`` in descending order.
+Sort by ``draft`` status in ascendig order (``false`` goes before ``true``)
+then by ``name`` in descending order.
 
 ```yaml
   - uses: ptomulik/github-action-get-releases@v0
