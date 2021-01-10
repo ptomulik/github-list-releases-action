@@ -284,7 +284,7 @@ Return entries from 2 to end of array
 
 ## Outputs
 
-Here is a short summary of inputs. Inputs denoted with * are required.
+Here is a short summary of outputs.
 
 | output                        | description                                                 |
 | ----------------------------- | ------------------------------------------ |
