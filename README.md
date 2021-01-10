@@ -110,14 +110,14 @@ Select release(s) with name == 'specific'
         name: 'specific'
 ```
 
-Select releases whose names match a regular expession, the regular expession
-may also contain flags
+Select releases whose names match a regular expression.
 
 ```yaml
   - uses: ptomulik/github-action-get-releases@v0
     with:
         name: '/^v?5.3.\d+$/'
 ```
+The regular expression may also contain flags
 
 ```yaml
   - uses: ptomulik/github-action-get-releases@v0
@@ -136,12 +136,12 @@ missing or empty to allow any name (the same may be achieved by name to ``*``).
 
 ### draft
 
-Allows selecting draft/non-draft releases. Suported values are ``false``,
+Allows selecting draft/non-draft releases. Supported values are ``false``,
 ``true`` and ``*``. If missing or empty, allows releases with any draft status.
 
 ### prerelease
 
-Allows selecting prereleases/non-prereleases. Suported values are ``false``,
+Allows selecting prereleases/non-prereleases. Supported values are ``false``,
 ``true`` and ``*``. If missing or empty, allows releases with any draft status.
 
 ### sort
@@ -149,9 +149,9 @@ Allows selecting prereleases/non-prereleases. Suported values are ``false``,
 Comma-separated list of property names that shall be used to sort the resultant
 array. Each property may optionally be followed by order specifier -
 ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'`` (descending). If
-order specifier is ommited for given key, the default [order](#order) is used.
+order specifier is omitted for given key, the default [order](#order) is used.
 
-**Note**: the order of keys in [sort](#sort) is immportant.
+**Note**: the order of keys in [sort](#sort) is important.
 
 **Supported (sortable) properties**:
 
@@ -179,7 +179,7 @@ Sort by ``id`` in descending order.
         sort: 'id DSC'
 ```
 
-Sort by ``draft`` status in ascendig order (``false`` goes before ``true``)
+Sort by ``draft`` status in ascending order (``false`` goes before ``true``)
 then by ``name`` in descending order.
 
 ```yaml
@@ -222,7 +222,7 @@ Select only ``name`` and ``url``
 
 The range of entries to be returned.
 
-Determines the range of entries to be sliceed after sorting.
+Determines the range of entries to be sliced after sorting.
 
 **Examples**:
 
