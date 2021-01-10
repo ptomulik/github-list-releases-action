@@ -11,7 +11,7 @@ the API client. By configuring certain options (action's inputs), the retrieved
 array may be processed (filtered, sorted, etc..) before it gets outputted.
 
 Some GitHub repositories have to post-process assets created by upstream
-repositories. A repository that puts the assets into Docker images is an
+repositories. A repository that packs upstream assets into Docker images is an
 example. Each time the upstream publishes a new release, the repository should
 rebuild and publish new images. This requires, however, some knowledge about
 existing upstream releases. This action enables us to obtain necessary
@@ -53,8 +53,6 @@ Here is a short summary of inputs. Inputs denoted with * are required.
 
 ### token
 
-Personal token.
-
 Personal token may be provided to perform authentication in order to avoid rate
 limiting and other GitHub restrictions that apply to anonymous users. If token
 is missing or empty, authentication is not performed and requests are sent
@@ -75,8 +73,6 @@ Name of the remote repository being queried, for example ``docs`` for
 [github/docs](https://github.com/github/docs) repository.
 
 ### per\_page
-
-Page size.
 
 GitHub API enforces pagination. The page size is settable, maximum page
 size is 100. Default page size is 30. This input changes the default page size
@@ -140,25 +136,27 @@ missing or empty to allow any name (the same may be achieved by name to ``*``).
 
 ### draft
 
-Value used to filter retrieved releases by draft status.
-
 Allows selecting draft/non-draft releases. Suported values are ``false``,
 ``true`` and ``*``. If missing or empty, allows releases with any draft status.
 
 ### prerelease
 
-Value used to filter retrieved releases by prerelease status.
-
-Allows selecting prereleases/non-prereleases.Suported values are ``false``,
+Allows selecting prereleases/non-prereleases. Suported values are ``false``,
 ``true`` and ``*``. If missing or empty, allows releases with any draft status.
 
 ### sort
 
-List of properties used for sorting the retrieved releases.
-
 Comma-separated list of property names, each optionally followed by order
 specifier - ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
 (descending). Used to sort the resultant array.'
+
+**Supported (sortable) properties**:
+
+|                  |                      |                 |                 |                |                |
+| ---------------- | -------------------- | --------------- | --------------- | -------------- | -------------- |
+| ``url``          | ``assets_url``       | ``upload_url``  | ``htlm_url``    | ``id``         | ``node_id``    |
+| ``tag_name``     | ``target_commitish`` | ``name``        | ``draft``       | ``prerelease`` | ``created_at`` |
+| ``published_at`` | ``tarball_url``      | ``zipball_url`` | ``body``        |                |                |
 
 **Examples**:
 
@@ -189,18 +187,23 @@ Sort by ``draft`` status in ascendig order (``false`` goes first) then by
 
 ### order
 
-Default sort order.
-
-Allowed values are ``'A'``|``'ASC'`` (ascending) or ``'D'``|``'DSC'``|``'DESC'``
-(descending). If missing or empty, the default sort order is ascending.
+Default sort order. Allowed values are ``'A'``|``'ASC'`` (ascending) or
+``'D'``|``'DSC'``|``'DESC'`` (descending). If missing or empty, the default
+sort order is ascending.
 
 ### select
-
-List of properties to be returned.
 
 List of properties to be included in each entry of the result. This should
 be a space or comma separated list of keywords. If missing or empty, allows all
 properties (the same may be achieved with ``'*'``).
+
+**Supported (selectable) properties**:
+
+|                |                  |                      |                 |                 |                |
+| -------------- | ---------------- | -------------------- | ----------------| ----------------| -------------- |
+| ``url``        | ``assets_url``   | ``upload_url``       | ``htlm_url``    | ``id``          | ``author``     |
+|``node_id``     | ``tag_name``     | ``target_commitish`` | ``name``        | ``draft``       | ``prerelease`` |
+| ``created_at`` | ``published_at`` | ``assets``           | ``tarball_url`` | ``zipball_url`` | ``body``       |
 
 **Examples**:
 
