@@ -3,6 +3,7 @@
 ![tests](https://github.com/ptomulik/github-action-get-releases/workflows/Tests/badge.svg?branch=master)
 ![build](https://github.com/ptomulik/github-action-get-releases/workflows/Build/badge.svg?branch=master)
 ![code](https://github.com/ptomulik/github-action-get-releases/workflows/Code%20Quality/badge.svg?branch=master)
+[![coverage](https://coveralls.io/repos/github/ptomulik/github-action-get-releases/badge.svg?branch=master)](https://coveralls.io/github/ptomulik/github-action-get-releases?branch=master)
 
 This action retrieves an array of releases from a remote GitHub repository using GitHub
 [list releases](https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-releases)

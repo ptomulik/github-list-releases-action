@@ -5,6 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "test": "jest",
+    "test-coverage": "jest --coverage",
     "build": "ncc build",
     "prettier": "prettier",
     "eslint": "eslint"
