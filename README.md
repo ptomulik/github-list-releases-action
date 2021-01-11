@@ -24,7 +24,7 @@ information directly from upstream repository.
   - [token](#token)
   - [owner](#owner)\*, [repo](#repo)\*
   - [per\_page](#per_page), [max\_entries](#max_entries)
-  - [name](#name), [tag\_name](#tag_name), [draft](#draft)
+  - [name](#name), [tag\_name](#tag_name), [draft](#draft),
     [prerelease](#prerelease)
   - [sort](#sort), [order](#order), [select](#select), [slice](#slice)
 - [Outputs](#outputs)
@@ -88,10 +88,10 @@ Max number of entries retrieved from remote repository.
 
 String used to filter retrieved releases by name.
 
-Select releases whose names match given criteria. The parameter may be set
+Selects releases with certain name(s). The parameter may be set
 to a specific release name, may be a regular expression (possibly with
 flags) or may be missing or empty to allow any name (the same may be achieved
-by name to ``*``).
+by setting ``name: '*'``).
 
 **Examples**:
 
@@ -130,9 +130,9 @@ The regular expression may also contain flags
 
 String used to filter retrieved releases by tag\_name.
 
-Select releases whose tag names match given criteria. The parameter may be set
-to a specific name, may be a regular expression (possibly with flags) or may be
-missing or empty to allow any name (the same may be achieved by name to ``*``).
+Selects releases certain tag name(s). The parameter may be set to a specific
+name, may be a regular expression (possibly with flags) or may be missing or
+empty to allow any name (the same may be achieved by setting ``name: '*'``).
 
 
 ### draft
