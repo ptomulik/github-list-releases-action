@@ -42,7 +42,7 @@ jobs:
               with:
                   token: ${{ secrets.GET_RELEASES_TOKEN }}
                   owner: ptomulik
-                  repo: github-action-get-releases
+                  repo: github-action-list-releases
                   tag_name: '/^v0\.\d+\.\d+$/'
                   select: id, tag_name, name
                   sort: tag_name DSC

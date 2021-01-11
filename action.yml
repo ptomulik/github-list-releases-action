@@ -1,5 +1,5 @@
-name: 'Get Releases'
-description: 'Get releases JSON from remote repository using GitHub API.'
+name: 'List Releases'
+description: 'Call GH "list releases" REST API to retrieve metadata describing releases published by remote repository'
 inputs:
 
   token:
