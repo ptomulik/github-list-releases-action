@@ -233,6 +233,7 @@ const validate = {
       }
     }
 
+    /* istanbul ignore next */
     throw new InternalError(`slice: ${JSON.stringify(value)}`)
   },
 }

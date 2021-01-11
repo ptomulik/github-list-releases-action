@@ -472,9 +472,9 @@ describe('inputs', () => {
     })
 
     describe.each([[['foo']], [[',']], [[' , ']]].map(adjust))(
-      `.order(%s)`,
+      `.select(%s)`,
       (_, [args]) => {
-        ensure('order').throwsValidationError(args)
+        ensure('select').throwsValidationError(args)
       }
     )
 

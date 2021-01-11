@@ -351,10 +351,56 @@ describe('processor', () => {
           {name: 'A', id: 1},
         ],
       ],
+
+      [
+        [['name', 'A']],
+        [{name: 'Z', id: 2}, {id: 1}, {name: 'A', id: 4}],
+        [{name: 'A', id: 4}, {name: 'Z', id: 2}, {id: 1}],
+      ],
+
+      [
+        [['name', 'A']],
+        [{id: 1}, {name: 'Z', id: 2}, {id: 3}, {name: 'A', id: 4}],
+        [{name: 'A', id: 4}, {name: 'Z', id: 2}, {id: 1}, {id: 3}],
+      ],
+
+      [
+        [['name', 'A']],
+        [
+          {id: 1},
+          {name: null, id: 2},
+          {name: 'Z', id: 3},
+          {name: null, id: 4},
+          {id: 5},
+          {name: 'A', id: 6},
+        ],
+        [
+          {name: 'A', id: 6},
+          {name: 'Z', id: 3},
+          {name: null, id: 2},
+          {name: null, id: 4},
+          {id: 1},
+          {id: 5},
+        ],
+      ],
     ])('new Sorter(%j).sort(%j)', (sort, entries, output) => {
       it(`returns ${JSON.stringify(output)}`, () => {
         expect.assertions(1)
         expect(new Sorter(sort).sort(entries)).toStrictEqual(output)
+      })
+    })
+
+    describe('.callback(null)', () => {
+      it('returns undefined', () => {
+        expect.assertions(1)
+        expect(Sorter.callback(null)).toBeUndefined()
+      })
+    })
+
+    describe('.callback(undefined)', () => {
+      it('returns undefined', () => {
+        expect.assertions(1)
+        expect(Sorter.callback(undefined)).toBeUndefined()
       })
     })
   })
@@ -392,6 +438,22 @@ describe('processor', () => {
       it(`returns ${JSON.stringify(output)}`, () => {
         expect.assertions(1)
         expect(new Selector(select).select(entries)).toStrictEqual(output)
+      })
+    })
+
+    describe('.callback(null)', () => {
+      it('returns arg => arg identity', () => {
+        expect.assertions(1)
+        const obj = {}
+        expect(Selector.callback(null)(obj)).toBe(obj)
+      })
+    })
+
+    describe('.callback(undefined)', () => {
+      it('returns arg => arg identity', () => {
+        expect.assertions(1)
+        const obj = {}
+        expect(Selector.callback(undefined)(obj)).toBe(obj)
       })
     })
   })

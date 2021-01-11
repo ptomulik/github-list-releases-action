@@ -43,13 +43,15 @@ class Sorter {
   }
 
   static cmp(left, right) {
-    // undefined shall be moved to the end
-    if (left === undefined && right === undefined) {
-      return 0
-    } else if (left === undefined) {
-      return 1
-    } else if (right === undefined) {
-      return -1
+    // nulls and undefined values shall be moved to the end
+    for (const special of [undefined, null]) {
+      if (left === special && right === special) {
+        return 0
+      } else if (left === special) {
+        return 1
+      } else if (right === special) {
+        return -1
+      }
     }
 
     const leftType = typeof left
@@ -120,7 +122,7 @@ class Slicer {
 
     switch (slice.type) {
       case 'F':
-        return Slicer.first(count(slice))
+        return arr => arr.slice(0, count(slice))
       case 'L':
         return arr => arr.slice(arr.length - count(slice), arr.length)
       case 'R':
@@ -128,21 +130,6 @@ class Slicer {
       default:
         return arr => arr
     }
-  }
-
-  static first(count) {
-    return arr => arr.slice(0, count)
-  }
-
-  static last(count) {
-    return arr => {
-      const n = arr.length
-      return arr.slice(n - count, n)
-    }
-  }
-
-  static range(from, to) {
-    return arr => (to == null ? arr.slice(from) : arr.slice(from, 1 + to))
   }
 }
 
