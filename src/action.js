@@ -2,10 +2,7 @@
 
 /* eslint camelcase: [error, {properties: "never"}] */
 
-const {Octokit} = require('@octokit/rest')
 const core = require('@actions/core')
-const {getInputs} = require('./inputs')
-const {Processor} = require('./processor')
 
 const createParams = inputs => {
   const params = {
@@ -34,7 +31,7 @@ const createParams = inputs => {
 const setOutputs = (inputs, entries) => {
   core.info(`setOutputs: preparing for ${entries.length} entries`)
 
-  const processor = new Processor(inputs)
+  const processor = new require('./processor').Processor(inputs)
   const array = processor.process(entries)
   const json = JSON.stringify(array)
   const ascii = Buffer.from(json).toString('base64')
@@ -46,8 +43,8 @@ const setOutputs = (inputs, entries) => {
 }
 
 async function run() {
-  const inputs = getInputs()
-  const octokit = new Octokit({
+  const inputs = require('./inputs').getInputs()
+  const octokit = new require('@octokit/rest').Octokit({
     auth: inputs.token,
   })
   const params = createParams(inputs)
