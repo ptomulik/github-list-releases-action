@@ -1,7 +1,7 @@
 'use strict'
 
-const {run} = require('./action')
+const action = require('./action')
 
-run()
+action.run()
 
 // vim: set ft=javascript ts=2 sw=2 sts=2:

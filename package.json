@@ -8,7 +8,9 @@
     "test-coverage": "jest --coverage",
     "build": "ncc build",
     "prettier": "prettier",
-    "eslint": "eslint"
+    "eslint": "eslint",
+    "lint": "eslint '**/*.js'",
+    "format": "prettier --check '**/*.js'"
   },
   "repository": {
     "type": "git",

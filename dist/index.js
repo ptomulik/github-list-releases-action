@@ -5112,9 +5112,9 @@ module.exports = {getInputs, validate, ValidationError, InternalError}
 "use strict";
 
 
-const {run} = __nccwpck_require__(348)
+const action = __nccwpck_require__(348)
 
-run()
+action.run()
 
 // vim: set ft=javascript ts=2 sw=2 sts=2:
 
