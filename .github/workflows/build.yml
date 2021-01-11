@@ -16,6 +16,14 @@ jobs:
             - uses: actions/checkout@v2
             - run: npm ci
             - run: npm run build
-            - run: __tests__/verify-no-unstaged-changes.sh
+            - name: Detect Changes
+              run: |
+                if ! __tests__/verify-no-unstaged-changes.sh; then
+                    echo '-----------------------------------------';
+                    echo 'Troubleshooting';
+                    echo '-----------------------------------------';
+                    echo '::error::Locally try running: git clean -ffdx && npm ci && npm run -- build';
+                    false;
+                fi
 
 # vim: set ft=yaml ts=4 sw=4 sts=2:

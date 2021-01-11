@@ -1,6 +1,6 @@
 'use strict'
 
-/* eslint camelcase: [error, {properties: "never"}] */
+/* eslint camelcase: [error, {allow: ["per_page", "max_entries", "tag_name"]}] */
 
 const core = require('@actions/core')
 
