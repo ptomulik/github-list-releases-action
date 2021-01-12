@@ -1,6 +1,6 @@
 'use strict'
 
-/* eslint no-unused-vars: ["error", {"argsIgnorePattern": "^_\d*$"}] */
+/*eslint no-unused-vars: ["error", {"argsIgnorePattern": "^_\d*$"}]*/
 /*eslint camelcase: [error, {allow: ["per_page", "max_entries", "tag_name"]}]*/
 
 const {run} = require('../src/action')

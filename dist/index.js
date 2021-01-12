@@ -4739,7 +4739,7 @@ function wrappy (fn, cb) {
 "use strict";
 
 
-/* eslint camelcase: [error, {allow: ["per_page", "max_entries", "tag_name"]}] */
+/*eslint camelcase: [error, {allow: ["per_page", "max_entries", "tag_name"]}]*/
 
 const {setFailed, error: logError} = __nccwpck_require__(186)
 const {Octokit} = __nccwpck_require__(375)
@@ -4827,7 +4827,7 @@ module.exports = {run}
 "use strict";
 
 
-/* eslint camelcase: [error, {allow: ["per_page", "max_entries", "tag_name"]}] */
+/*eslint camelcase: [error, {allow: ["per_page", "max_entries", "tag_name"]}]*/
 
 const core = __nccwpck_require__(186)
 

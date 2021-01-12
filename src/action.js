@@ -1,6 +1,6 @@
 'use strict'
 
-/* eslint camelcase: [error, {allow: ["per_page", "max_entries", "tag_name"]}] */
+/*eslint camelcase: [error, {allow: ["per_page", "max_entries", "tag_name"]}]*/
 
 const {setFailed, error: logError} = require('@actions/core')
 const {Octokit} = require('@octokit/rest')
