@@ -130,9 +130,10 @@ The regular expression may also contain flags
 
 String used to filter retrieved releases by tag\_name.
 
-Selects releases certain tag name(s). The parameter may be set to a specific
-name, may be a regular expression (possibly with flags) or may be missing or
-empty to allow any name (the same may be achieved by setting ``name: '*'``).
+Selects releases with certain tag name(s). The parameter may be set to a
+specific name, may be a regular expression (possibly with flags) or may be
+missing or empty to allow any name (the same may be achieved by setting
+``name: '*'``).
 
 
 ### draft
