@@ -2,7 +2,7 @@
 
 /*eslint camelcase: [error, {allow: ["per_page", "max_entries", "tag_name"]}]*/
 
-const {setFailed, error: logError} = require('@actions/core')
+const core = require('@actions/core')
 const {Octokit} = require('@octokit/rest')
 const {Processor} = require('./processor')
 const {getInputs} = require('./inputs')
@@ -70,8 +70,8 @@ async function run() {
   try {
     await doRun()
   } catch (error) {
-    logError(error.message)
-    setFailed(error.stack)
+    core.error(error.message)
+    core.setFailed(error.stack)
   }
 }
 

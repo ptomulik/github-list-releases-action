@@ -4741,7 +4741,7 @@ function wrappy (fn, cb) {
 
 /*eslint camelcase: [error, {allow: ["per_page", "max_entries", "tag_name"]}]*/
 
-const {setFailed, error: logError} = __nccwpck_require__(186)
+const core = __nccwpck_require__(186)
 const {Octokit} = __nccwpck_require__(375)
 const {Processor} = __nccwpck_require__(820)
 const {getInputs} = __nccwpck_require__(229)
@@ -4809,8 +4809,8 @@ async function run() {
   try {
     await doRun()
   } catch (error) {
-    logError(error.message)
-    setFailed(error.stack)
+    core.error(error.message)
+    core.setFailed(error.stack)
   }
 }
 
@@ -5112,14 +5112,14 @@ action.run()
 "use strict";
 
 
-const {setOutput} = __nccwpck_require__(186)
+const core = __nccwpck_require__(186)
 
 const setOutputs = entries => {
   const json = JSON.stringify(entries)
   const ascii = Buffer.from(json).toString('base64')
-  setOutput('json', json)
-  setOutput('base64', ascii)
-  setOutput('count', entries.length)
+  core.setOutput('json', json)
+  core.setOutput('base64', ascii)
+  core.setOutput('count', entries.length)
 }
 
 module.exports = {setOutputs}

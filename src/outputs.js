@@ -1,13 +1,13 @@
 'use strict'
 
-const {setOutput} = require('@actions/core')
+const core = require('@actions/core')
 
 const setOutputs = entries => {
   const json = JSON.stringify(entries)
   const ascii = Buffer.from(json).toString('base64')
-  setOutput('json', json)
-  setOutput('base64', ascii)
-  setOutput('count', entries.length)
+  core.setOutput('json', json)
+  core.setOutput('base64', ascii)
+  core.setOutput('count', entries.length)
 }
 
 module.exports = {setOutputs}
