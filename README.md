@@ -5,20 +5,31 @@
 ![code](https://github.com/ptomulik/github-action-list-releases/workflows/Code%20Quality/badge.svg?branch=master)
 [![coverage](https://coveralls.io/repos/github/ptomulik/github-action-list-releases/badge.svg?branch=master)](https://coveralls.io/github/ptomulik/github-action-list-releases?branch=master)
 
+### WARNING!
+
+This action is still under development and may change essentially! Do not use
+in production.
+
+### Description
+
 This action retrieves an array of releases from a remote GitHub repository using GitHub
 [list releases](https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-releases)
 API. By default, complete array of remote releases is returned, as retrieved by
 the API client. By configuring certain options (action's inputs), the retrieved
 array may be processed (filtered, sorted, etc..) before it gets outputted.
 
-Some GitHub repositories have to post-process assets created by upstream
-repositories. A repository that packs upstream assets into Docker images is an
-example. Each time the upstream publishes a new release, the repository should
-rebuild and publish new images. This requires, however, some knowledge about
-existing upstream releases. This action enables us to obtain necessary
-information directly from upstream repository.
+### Rationale
 
-## Contents
+Some GitHub repositories depend on assets released by upstream repositories.
+A repository that generates Docker images containing such assets is an example.
+Whenever a new version of downstream repository (containing ``Dockerfile``(s))
+is tagged or the upstream releases new version with assets, we should build
+and publish new versions of docker images. This requires, however, some
+knowledge about existing upstream releases. A list of releases with URLs
+pointing assets, we're interested in, is essential. The action enables us to
+retrieve necessary information from upstream repository.
+
+## Table of Contents
 
 - [Inputs](#inputs)
   - [token](#token)
