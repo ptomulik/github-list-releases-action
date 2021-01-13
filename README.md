@@ -26,8 +26,8 @@ Whenever a new version of downstream repository (containing ``Dockerfile``(s))
 is tagged or the upstream releases new version with assets, we should build
 and publish new versions of docker images. This requires, however, some
 knowledge about existing upstream releases. A list of releases with URLs
-pointing assets, we're interested in, is essential. The action enables us to
-retrieve necessary information from upstream repository.
+pointing to assets, we're interested in, is essential. The action enables
+us to retrieve necessary information from upstream repository.
 
 ## Table of Contents
 
