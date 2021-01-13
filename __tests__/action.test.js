@@ -179,20 +179,11 @@ describe('action', () => {
 
     describe('when exception is thrown', () => {
       const error = new ValidationError('doh!')
-
-      it(`calls core.error(${JSON.stringify(error.message)})`, async () => {
-        expect.assertions(2)
-        await examine(error)(async () => {
-          await expect(run()).resolves.toBeUndefined()
-          expect(core.error).toHaveBeenCalledWith(error.message)
-        })
-      })
-
       it('calls core.setFailed(...)', async () => {
         expect.assertions(2)
         await examine(error)(async () => {
           await expect(run()).resolves.toBeUndefined()
-          expect(core.setFailed).toHaveBeenCalledWith(error.stack)
+          expect(core.setFailed).toHaveBeenCalledWith(error.message)
         })
       })
     })

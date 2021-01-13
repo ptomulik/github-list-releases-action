@@ -4809,8 +4809,7 @@ async function run() {
   try {
     await doRun()
   } catch (error) {
-    core.error(error.message)
-    core.setFailed(error.stack)
+    core.setFailed(error.message)
   }
 }
 
