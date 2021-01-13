@@ -12,8 +12,8 @@ in production.
 
 ### Description
 
-This action retrieves an array of releases from a remote GitHub repository using GitHub
-[list releases](https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-releases)
+This action retrieves an array of releases from a remote GitHub repository by
+using GitHub [list releases](https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#list-releases)
 API. By default, complete array of remote releases is returned, as retrieved by
 the API client. By configuring certain options (action's inputs), the retrieved
 array may be processed (filtered, sorted, etc..) before it gets outputted.
