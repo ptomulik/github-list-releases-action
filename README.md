@@ -20,14 +20,14 @@ array may be processed (filtered, sorted, etc..) before it gets outputted.
 
 ### Rationale
 
-Some GitHub repositories depend on assets released by upstream repositories.
-A repository that generates Docker images containing such assets is an example.
-Whenever a new version of downstream repository (containing ``Dockerfile``(s))
-is tagged or the upstream releases new version with assets, we should build
-and publish new versions of docker images. This requires, however, some
-knowledge about existing upstream releases. A list of releases with URLs
-pointing to assets, we're interested in, is essential. The action enables
-us to retrieve necessary information from upstream repository.
+Some GitHub repositories depend on assets released by upstream repositories. A
+repository that generates Docker images containing such assets is an example.
+Whenever a new version of the downstream repository is tagged or a new upstream
+release is published, we should build and publish new versions of docker
+images. This requires, however, some knowledge about existing upstream
+releases. A list of releases with URLs pointing to assets is essential. It can
+be retrieved easily with the
+[github-action-list-releases](https://github.com/ptomulik/github-action-list-releases).
 
 ## Table of Contents
 
