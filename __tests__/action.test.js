@@ -23,10 +23,10 @@ class OctokitMockImpl {
       listReleases: 'listReleases',
     }
     jest.spyOn(this, 'paginate')
+    jest.spyOn(this, 'done')
   }
 
   async paginate(endpoint, params, callback) {
-    jest.spyOn(this, 'done')
     const size = params.per_page || 30
     let data = []
     for (let beg = 0; beg < this.releases.length && !this.stop; beg += size) {
