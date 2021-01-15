@@ -1,6 +1,6 @@
 {
-  "name": "@ptomulik/github-action-list-releases",
-  "version": "0.1.0",
+  "name": "@ptomulik/github-list-releases-action",
+  "version": "0.2.0",
   "description": "GitHub action to retrieve releases from a remote repository",
   "main": "src/main.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ptomulik/github-action-list-releases"
+    "url": "git+https://github.com/ptomulik/github-list-releases-action"
   },
   "keywords": [],
   "author": "Paweł Tomulik <ptomulik@meil.pw.edu.pl>",

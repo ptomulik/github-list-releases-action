@@ -1,9 +1,9 @@
 # List Releases
 
-![tests](https://github.com/ptomulik/github-action-list-releases/workflows/Tests/badge.svg?branch=master)
-![build](https://github.com/ptomulik/github-action-list-releases/workflows/Build/badge.svg?branch=master)
-![code](https://github.com/ptomulik/github-action-list-releases/workflows/Code%20Quality/badge.svg?branch=master)
-[![coverage](https://coveralls.io/repos/github/ptomulik/github-action-list-releases/badge.svg?branch=master)](https://coveralls.io/github/ptomulik/github-action-list-releases?branch=master)
+![tests](https://github.com/ptomulik/github-list-releases-action/workflows/Tests/badge.svg?branch=master)
+![build](https://github.com/ptomulik/github-list-releases-action/workflows/Build/badge.svg?branch=master)
+![code](https://github.com/ptomulik/github-list-releases-action/workflows/Code%20Quality/badge.svg?branch=master)
+[![coverage](https://coveralls.io/repos/github/ptomulik/github-list-releases-action/badge.svg?branch=master)](https://coveralls.io/github/ptomulik/github-list-releases-action?branch=master)
 
 ### WARNING!
 
@@ -27,7 +27,7 @@ release is published, we should build and publish new versions of docker
 images. This requires, however, some knowledge about existing upstream
 releases. A list of releases with URLs pointing to assets is essential. It can
 be retrieved easily with the
-[github-action-list-releases](https://github.com/ptomulik/github-action-list-releases).
+[github-list-releases-action](https://github.com/ptomulik/github-list-releases-action).
 
 ## Table of Contents
 
@@ -109,7 +109,7 @@ by setting ``name: '*'``).
 Allow any name,
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         name: '*'
 ```
@@ -117,7 +117,7 @@ Allow any name,
 Select release(s) with name == 'specific'
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         name: 'specific'
 ```
@@ -125,14 +125,14 @@ Select release(s) with name == 'specific'
 Select releases whose names match a regular expression.
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         name: '/^v?5.3.\d+$/'
 ```
 The regular expression may also contain flags
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         name: '/^latest$/i'
 ```
@@ -179,7 +179,7 @@ order specifier is omitted for given key, the default [order](#order) is used.
 Sort by ``id``.
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         sort: 'id'
 ```
@@ -187,7 +187,7 @@ Sort by ``id``.
 Sort by ``id`` in descending order.
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         sort: 'id DSC'
 ```
@@ -196,7 +196,7 @@ Sort by ``draft`` status in ascending order (``false`` goes before ``true``)
 then by ``name`` in descending order.
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         sort: 'draft = ASC, name = DSC'
 ```
@@ -226,7 +226,7 @@ properties (the same may be achieved with ``'*'``).
 Select only ``name`` and ``url``
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         select: 'name, url'
 ```
@@ -242,7 +242,7 @@ Determines the range of entries to be sliced after sorting.
 Return all entries
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         slice: 'all'
 ```
@@ -250,7 +250,7 @@ Return all entries
 Return first entry
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         slice: 'first'
 ```
@@ -258,7 +258,7 @@ Return first entry
 Return up to 3 first entries
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         slice: 'first 3'
 ```
@@ -266,7 +266,7 @@ Return up to 3 first entries
 Return last entry
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         slice: 'last'
 ```
@@ -274,7 +274,7 @@ Return last entry
 Return up to 3 last entries
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         slice: 'last 3'
 ```
@@ -282,7 +282,7 @@ Return up to 3 last entries
 Return entries 2 to 4 (zero-based indices)
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         slice: '2 ... 4'
 ```
@@ -290,7 +290,7 @@ Return entries 2 to 4 (zero-based indices)
 Return entries from 2 to end of array
 
 ```yaml
-  - uses: ptomulik/github-action-list-releases@v0
+  - uses: ptomulik/github-list-releases-action@v0
     with:
         slice: '2 ...'
 ```
@@ -342,7 +342,7 @@ on:
             repo:
                 description: 'repo'
                 required: true
-                default: 'github-action-list-releases'
+                default: 'github-list-releases-action'
             name:
                 description: 'name (e.g. "Release v1.2.3")'
                 required: false
@@ -377,7 +377,7 @@ jobs:
 
             - name: List Releases
               id: releases
-              uses: ptomulik/github-action-list-releases@v0
+              uses: ptomulik/github-list-releases-action@v0
               with:
                   token: ${{ secrets.GET_RELEASES_TOKEN }}
                   owner: ${{ github.event.inputs.owner }}
@@ -410,7 +410,7 @@ releases: [
     "tag_name": "v0.1.0",
     "created_at": "2021-01-10T16:22:17Z",
     "published_at": "2021-01-10T16:24:35Z",
-    "url": "https://api.github.com/repos/ptomulik/github-action-list-releases/releases/36197357"
+    "url": "https://api.github.com/repos/ptomulik/github-list-releases-action/releases/36197357"
   },
   {
     "id": 36185784,
@@ -418,7 +418,7 @@ releases: [
     "tag_name": "v0.0.1",
     "created_at": "2021-01-09T22:44:38Z",
     "published_at": "2021-01-09T22:45:16Z",
-    "url": "https://api.github.com/repos/ptomulik/github-action-list-releases/releases/36185784"
+    "url": "https://api.github.com/repos/ptomulik/github-list-releases-action/releases/36185784"
   },
   {
     "id": 36185144,
@@ -426,7 +426,7 @@ releases: [
     "tag_name": "v0.0.0",
     "created_at": "2021-01-09T21:41:45Z",
     "published_at": "2021-01-09T21:54:33Z",
-    "url": "https://api.github.com/repos/ptomulik/github-action-list-releases/releases/36185144"
+    "url": "https://api.github.com/repos/ptomulik/github-list-releases-action/releases/36185144"
   }
 ]
 count: 3
