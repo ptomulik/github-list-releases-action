@@ -172,7 +172,7 @@ order specifier is omitted for given key, the default [order](#order) is used.
 | ---------------- | -------------------- | --------------- | --------------- | -------------- | -------------- |
 | ``url``          | ``assets_url``       | ``upload_url``  | ``htlm_url``    | ``id``         | ``node_id``    |
 | ``tag_name``     | ``target_commitish`` | ``name``        | ``draft``       | ``prerelease`` | ``created_at`` |
-| ``published_at`` | ``tarball_url``      | ``zipball_url`` | ``body``        |                |                |
+| ``published_at`` | ``tarball_url``      | ``zipball_url`` | ``body``        | ``body_html``  | ``body_text``  |
 
 **Examples**:
 
@@ -220,6 +220,7 @@ properties (the same may be achieved with ``'*'``).
 | ``url``        | ``assets_url``   | ``upload_url``       | ``htlm_url``    | ``id``          | ``author``     |
 |``node_id``     | ``tag_name``     | ``target_commitish`` | ``name``        | ``draft``       | ``prerelease`` |
 | ``created_at`` | ``published_at`` | ``assets``           | ``tarball_url`` | ``zipball_url`` | ``body``       |
+| ``body_html``  | ``body_text``    |                      |                 |                 |                |
 
 **Examples**:
 

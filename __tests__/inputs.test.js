@@ -294,6 +294,8 @@ describe('inputs', () => {
         [['tarball_url'], [['tarball_url', 'A']]],
         [['zipball_url'], [['zipball_url', 'A']]],
         [['body'], [['body', 'A']]],
+        [['body_html'], [['body_html', 'A']]],
+        [['body_text'], [['body_text', 'A']]],
         [
           ['url, id'],
           [
@@ -464,6 +466,8 @@ describe('inputs', () => {
         [['tarball_url'], ['tarball_url']],
         [['zipball_url'], ['zipball_url']],
         [['body'], ['body']],
+        [['body_html'], ['body_html']],
+        [['body_text'], ['body_text']],
         [[' url, id  '], ['url', 'id']],
         [[' url  id  '], ['url', 'id']],
       ].map(adjust)

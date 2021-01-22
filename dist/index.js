@@ -4858,6 +4858,8 @@ const validate = {
     'tarball_url',
     'zipball_url',
     'body',
+    'body_html',
+    'body_text',
   ],
 
   selectable: [
@@ -4879,6 +4881,8 @@ const validate = {
     'tarball_url',
     'zipball_url',
     'body',
+    'body_html',
+    'body_text',
   ],
 
   stringOrRegexp(value) {
