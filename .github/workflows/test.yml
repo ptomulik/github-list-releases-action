@@ -15,12 +15,23 @@ jobs:
                   node-version: 12.x
             - uses: actions/checkout@v2
             - run: npm ci
-            - run: npm run test-coverage
+            - run: npm run test:coverage
             - name: Coveralls
               uses: coverallsapp/github-action@master
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   path-to-lcov: ./coverage/lcov.info
+
+    types:
+        name: Types Tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12.x
+            - uses: actions/checkout@v2
+            - run: npm ci
+            - run: npm run -- test:ts
 
     test:
         name: Action Test
@@ -53,7 +64,7 @@ jobs:
                   jq '' <<'!'
                   ${{ steps.v0latest.outputs.json }}
                   !
-                  if [ '${{ steps.v0latest.outputs.count }}' -ne 1  ]; then
+                  if [ '${{ steps.v0latest.outputs.count }}' != '1'  ]; then
                     echo 'count: ${{ steps.v0latest.outputs.count }} != 1';
                     false;
                   fi

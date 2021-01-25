@@ -1,18 +1,34 @@
 {
-    "plugins": ["jest", "github"],
-    "extends": ["plugin:github/recommended"],
+    "plugins": [
+      "jest",
+      "@typescript-eslint",
+      "prettier"
+    ],
+    "extends": [
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 5,
+      "sourceType": "module"
+    },
     "env": {
         "node": true
     },
-    "parserOptions": {
-        "ecmaVersion": 8
-    },
     "overrides": [
       {
-        "files": ["**/*.test.js"],
-        "extends": ["plugin:jest/all"]
+        "files": ["**/*.test.ts"],
+        "extends": [
+          "plugin:jest/all",
+          "plugin:@typescript-eslint/eslint-recommended",
+          "plugin:@typescript-eslint/recommended",
+          "plugin:prettier/recommended"
+        ]
       }
     ],
     "rules": {
+      "@typescript-eslint/no-explicit-any": "error"
     }
 }
