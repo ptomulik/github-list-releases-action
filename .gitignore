@@ -22,5 +22,9 @@
 # npm
 node_modules/
 
+# intermediate
+lib/
+pkg/
+
 # jest
 /coverage/
