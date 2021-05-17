@@ -15,6 +15,6 @@ jobs:
                   node-version: 12.x
             - uses: actions/checkout@v2
             - run: npm ci
-            - run: npm run lint
+            - run: npm run -- lint
 
 # vim: set ft=yaml ts=4 sw=4 sts=4:
