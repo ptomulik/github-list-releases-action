@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@google/semantic-release-replace-plugin": "^1.0.2",
+    "@semantic-release/exec": "^5.0.0",
     "@semantic-release/git": "^9.0.0",
     "@types/fetch-mock": "^7.3.3",
     "@types/jest": "^26.0.23",
@@ -88,6 +89,12 @@
               "countMatches": true
             }
           ]
+        }
+      ],
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "npm run build"
         }
       ],
       [
