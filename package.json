@@ -94,6 +94,7 @@
       [
         "@semantic-release/exec",
         {
+          "verifyReleaseCmd": "npm run test:coverage && npm run test:ts && npm run lint",
           "prepareCmd": "npm run build"
         }
       ],
