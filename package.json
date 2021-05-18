@@ -1,6 +1,6 @@
 {
   "name": "@ptomulik/github-list-releases-action",
-  "version": "0.2.1",
+  "version": "0.0.0",
   "description": "GitHub action to retrieve releases from a remote repository",
   "scripts": {
     "test": "jest",
