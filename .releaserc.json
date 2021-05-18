@@ -2,6 +2,12 @@
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    "@semantic-release/github"
+    "@semantic-release/github",
+    [
+      "@semantic-release/exec",
+      {
+        "successCmd": "slidingTag=`./scripts/make-sliding-tag.sh \"${nextRelease.version}\"` && git tag -f \"${nextRelease.version} $slidingTag\" && git push -f origin $slidingTag"
+      }
+    ]
   ]
 }
