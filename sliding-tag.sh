@@ -15,7 +15,7 @@ nextVersion="$1";
 slidingTag=`echo "$nextVersion" | getSlidingTag`;
 
 if [ -z "$slidingTag" ]; then
-  echo "error: invalid argument {$nextVersion}" >&2;
+  echo "error: invalid argument $nextVersion" >&2;
   exit 1;
 fi
 
