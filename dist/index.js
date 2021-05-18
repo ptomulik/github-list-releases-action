@@ -1626,7 +1626,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var request = __nccwpck_require__(234);
 var universalUserAgent = __nccwpck_require__(30);
 
-const VERSION = "4.6.1";
+const VERSION = "4.6.2";
 
 class GraphqlError extends Error {
   constructor(request, response) {
