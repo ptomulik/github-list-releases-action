@@ -14,17 +14,6 @@ API. By default, complete array of remote releases is returned, as retrieved by
 the API client. By configuring certain options (action's inputs), the retrieved
 array may be processed (filtered, sorted, etc..) before it gets outputted.
 
-### Rationale
-
-Some GitHub repositories depend on assets released by upstream repositories. A
-repository that generates Docker images containing such assets is an example.
-Whenever a new version of the downstream repository is tagged or a new upstream
-release is published, we should build and publish new versions of docker
-images. This requires, however, some knowledge about existing upstream
-releases. A list of releases with URLs pointing to assets is essential. It can
-be retrieved easily with the
-[github-list-releases-action](https://github.com/ptomulik/github-list-releases-action).
-
 ## Table of Contents
 
 - [Inputs](#inputs)
