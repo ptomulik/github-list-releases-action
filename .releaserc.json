@@ -6,7 +6,7 @@
     [
       "@semantic-release/exec",
       {
-        "successCmd": "slidingTag=`./scripts/make-sliding-tag.sh \"${nextRelease.version}\"` && git tag -f \"${nextRelease.version} $slidingTag\" && git push -f origin $slidingTag"
+        "successCmd": "slidingTag=`./scripts/make-sliding-tag.sh \"${nextRelease.version}\"` && git tag -f \"${nextRelease.version}\" \"$slidingTag\" && git push -f origin $slidingTag"
       }
     ]
   ]
